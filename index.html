@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="ico.ico">
+    <title>证书查询</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        /* 添加菜单样式 */
+        #menu {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        /*添加文件样式*/
+        #file {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* 图片浏览部分样式 */
+        #imageGallery {
+            display: none;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            z-index: 2;
+        }
+
+        #imageGallery img {
+            max-width: 100%;
+            height: auto;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #closeGallery {
+            text-align: right;
+        }
+
+        /* 修改返回按钮的位置 */
+        #returnButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        #musicPlaylist {
+            position: absolute;
+            bottom: -260px;
+            left: -600px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #songs {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* 移动播放器按钮到左下角 */
+        #musicPlayer {
+            position: absolute;
+            bottom: -320px;
+            left: -600px;
+            background-color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sakura-container"></div>
+    <script src="script.js"></script>
+</body>
+    <body>
+        <div style="position: relative;">
+            <div id="musicPlaylist">
+                <label for="songs">播放列表:</label>
+                <select id="songs" onchange="playSelectedSong()">
+                    <option value="午夜怨曲.mp3">午夜怨曲</option>
+                    <option value="另一首歌曲.mp3">另一首歌曲</option>
+                    <!-- 添加更多歌曲选项 -->
+                </select>
+            </div>
+            <div id="musicPlayer">
+                <button onclick="toggleMusic()">暂停/继续</button>
+            </div>
+        </div>
+    
+        <!-- 音乐播放器 -->
+        <audio id="backgroundMusic" autoplay loop>
+            <source src="午夜怨曲.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    <div class="container">
+        <h1>证书查询</h1>
+        <form onsubmit="queryCertificate(); return false;">
+            <label for="name">姓名:</label>
+            <input type="text" id="name" required><br>
+            <label for="certificateNumber">证书编号:</label>
+            <input type="text" id="certificateNumber" required><br>
+            <button type="submit">查询</button>
+        </form>
+        <div id="result"></div>
+        <button id="returnButton" style="display: none;" onclick="returnToForm()">返回</button>
+    </div>
+
+    <!-- 添加菜单 -->
+    <div id="menu" onclick="openImageGallery()">资质公开</div>
+
+    <div id="file">
+    <p>
+        <a href="关于开展“极耀杯”活动赛事的说明.pdf">赛事说明</a>
+    </p>
+        </div>
+
+    <!-- 图片浏览部分 -->
+    <div id="imageGallery">
+        <div id="closeGallery" onclick="closeImageGallery()">关闭</div>
+        <img src="营业执照.jpg" alt="Image 1">
+        <img src="登记证书.jpg" alt="Image 2">
+    </div>
+
+    <script>
+        // 内部存储的证书数据（与之前的示例相同）
+        var certificates = [
+            {
+                name: "1",
+                certificateNumber: "1",
+                image: "1.jpg"
+            },
+        ];
+
+        function queryCertificate() {
+            var nameInput = document.getElementById('name').value;
+            var certificateNumberInput = document.getElementById('certificateNumber').value;
+            var resultElement = document.getElementById('result');
+            var returnButton = document.getElementById('returnButton');
+
+            // 在内部数据中查找匹配的姓名和证书编号
+            var foundCertificate = certificates.find(function(certificate) {
+                return certificate.name === nameInput && certificate.certificateNumber === certificateNumberInput;
+            });
+
+            if (foundCertificate) {
+                resultElement.innerHTML = `
+                    <p>姓名: ${foundCertificate.name}</p>
+                    <p>证书编号: ${foundCertificate.certificateNumber}</p>
+                    <img src="${foundCertificate.image}" alt="证书图片">
+                `;
+                returnButton.style.display = 'block'; // 显示返回按钮
+            } else {
+                resultElement.textContent = "未找到匹配的证书信息。";
+                returnButton.style.display = 'block'; // 显示返回按钮
+            }
+            // 查询证书的逻辑（与之前的示例相同）
+        }
+
+        function returnToForm() {
+            var resultElement = document.getElementById('result');
+            var returnButton = document.getElementById('returnButton');
+            resultElement.innerHTML = ''; // 清空结果
+            returnButton.style.display = 'none'; // 隐藏返回按钮
+            // 返回按钮的逻辑（与之前的示例相同）
+        }
+
+        // 打开图片浏览部分
+        function openImageGallery() {
+            var imageGallery = document.getElementById('imageGallery');
+            imageGallery.style.display = 'block';
+        }
+
+        // 关闭图片浏览部分
+        function closeImageGallery() {
+            var imageGallery = document.getElementById('imageGallery');
+            imageGallery.style.display = 'none';
+        }
+        // 打开PDF文件
+        function openPDF() {
+            var pdfViewer = document.getElementById('pdfViewer');
+            pdfViewer.style.display = 'block';
+        }
+
+        // 关闭PDF文件
+        function closePDF() {
+            var pdfViewer = document.getElementById('pdfViewer');
+            pdfViewer.style.display = 'none';
+        }
+        var audio = document.getElementById("backgroundMusic");
+        var musicPlayerButton = document.querySelector("#musicPlayer button");
+        var songSelect = document.getElementById("songs");
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                musicPlayerButton.textContent = "暂停";
+            } else {
+                audio.pause();
+                musicPlayerButton.textContent = "继续";
+            }
+        }
+
+        function playSelectedSong() {
+            var selectedSong = songSelect.value;
+            audio.src = selectedSong;
+            audio.play();
+            musicPlayerButton.textContent = "暂停";
+        }
+    </script>
+</body>
+</html>
